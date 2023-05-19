@@ -1,0 +1,82 @@
+version: "3"
+services:
+    nginx:
+        build:
+            context: .
+            dockerfile: nginx/Dockerfile
+        container_name: nginx-alpine
+        image: jobar_nginx:1.0
+        restart: always
+        ports: 
+            - "80:80"
+            - "443:443"
+        working_dir: /var/www/html
+        volumes_from:
+          - php
+
+        networks:
+            - internal
+
+        environment:
+            TZ: Asia/Taipei
+        
+        volumes:
+            - ./nginx/conf.d:/etc/nginx/conf.d/
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+
+        depends_on:
+            - db
+
+    php:
+        build:
+            context: .
+            dockerfile: php/Dockerfile
+        image: jobar_php:1.0
+        container_name: php-7.3
+        restart: always
+        environment:
+            XDEBUG_MODE: develop,debug #develop
+            XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003
+            ENV_CONFIG_DIR: /var/www/html
+            TZ: Asia/Taipei
+
+        volumes: # 這裡的映射會把本機端的資料映射到容器之中, 覆蓋容器內的資料, 因此只需將在本機上編輯查看的資料帶出來僅可
+            - ./data/:/var/www/html/
+
+        depends_on:
+            - db
+            
+        links:
+            - db
+        networks:
+            - internal
+            - default
+
+    db:
+        build:
+            context: .
+            dockerfile: mysql/Dockerfile
+        image: jobar_mysql:1.0
+        container_name: mysql_container
+
+        ports: 
+            - "3306:3306"
+        command:
+            --explicit_defaults_for_timestamp=true
+
+        environment:
+            MYSQL_DATABASE: jobar
+            MYSQL_USER: jobar
+            MYSQL_PASSWORD: jobar123
+            MYSQL_ROOT_PASSWORD: jobar123 
+            TZ : Asia/Taipei
+        volumes:
+            - ./mysql/mysql_data:/var/lib/mysql
+
+        networks:
+            - default
+        restart: always
+
+networks:
+    internal:
+        driver: bridge
