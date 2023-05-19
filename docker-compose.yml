@@ -4,7 +4,7 @@ services:
         build:
             context: .
             dockerfile: nginx/Dockerfile
-        container_name: nginx-alpine
+        container_name: jobar_nginx
         image: jobar_nginx:1.0
         restart: always
         ports: 
@@ -32,7 +32,7 @@ services:
             context: .
             dockerfile: php/Dockerfile
         image: jobar_php:1.0
-        container_name: php-7.3
+        container_name: jobar_php
         restart: always
         environment:
             XDEBUG_MODE: develop,debug #develop
@@ -57,7 +57,7 @@ services:
             context: .
             dockerfile: mysql/Dockerfile
         image: jobar_mysql:1.0
-        container_name: mysql_container
+        container_name: jobar_mysql
 
         ports: 
             - "3306:3306"
