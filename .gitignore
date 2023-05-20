@@ -1,2 +1,3 @@
 log/*
 mysql/mysql_data/*
+data/storage/*

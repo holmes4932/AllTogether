@@ -1,77 +1,52 @@
-FROM php:7.3-fpm
-#This is Debian 11 os
+# Set master image
+FROM php:7.2-fpm-alpine
 
-# 主要是session file系統預設是 /var/lib/php，但container沒有這個folder，先暫存/var/lib
-ENV PHP_INI_DIR=/usr/local/etc/php \
-    PHP_DATA_DIR=/var/lib \
-    ENV_CONFIG_DIR=/var/www/html \
-    PHP_CONF_DIR=/usr/local/etc/php-fpm.d
+# Copy composer.lock and composer.json
+# COPY ./jobar/composer.lock ./jobar/composer.json /var/www/html/
 
-# ENV PHP_CONF_DIR=etc/php/7.3 \
-#     PHP_DATA_DIR=/var/lib/php
+# Set working directory
+WORKDIR /var/www/html
 
-RUN chown www-data:www-data ${PHP_INI_DIR} -Rf \
-    && chown www-data:www-data ${PHP_DATA_DIR} -Rf \
-    && chown www-data:www-data ${ENV_CONFIG_DIR} -Rf \
-    && chown www-data:www-data ${PHP_CONF_DIR} -Rf
+# Install Additional dependencies
+RUN apk update && apk add --no-cache \
+    build-base shadow vim curl \
+    php7 \
+    php7-fpm \
+    php7-common \
+    php7-pdo \
+    php7-pdo_mysql \
+    php7-mysqli \
+    php7-mcrypt \
+    php7-mbstring \
+    php7-xml \
+    php7-openssl \
+    php7-json \
+    php7-phar \
+    php7-zip \
+    php7-gd \
+    php7-dom \
+    php7-session \
+    php7-zlib
 
-RUN apt-get update
-RUN apt-get install -y \
-    software-properties-common\
-    vim \
-    zip \
-    unzip \
-    git \
-    curl \
-    sudo \
-    procps \
-    gcc \
-    make \
-    autoconf \
-    libc-dev \
-    pkg-config \
-    #libmysqlclient-dev \
-    default-mysql-client\
-    cmake \ 
-    wget \
-    gnupg \
-    mosquitto-clients
-
-
-RUN apt-get install -y ssl-cert
-
-
-RUN sudo apt-get -y install lsb-release apt-transport-https ca-certificates
-RUN sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php7.3.list
-RUN apt-get update
-
+# Add and Enable PHP-PDO Extenstions
 RUN docker-php-ext-install pdo pdo_mysql
-RUN pecl install -f xdebug-3.1.5
-RUN docker-php-ext-enable xdebug
+RUN docker-php-ext-enable pdo_mysql
 
+# Install PHP Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN apt-get purge -y --auto-remove $BUILD_DEPS \
-	&& apt-get autoremove -y \
-	&& rm -rf /var/lib/apt/lists/*
+# Remove Cache
+RUN rm -rf /var/cache/apk/*
 
-COPY --chown=www-data:www-data ../data/ ${ENV_CONFIG_DIR}/
+# Add UID '1000' to www-data
+RUN usermod -u 1000 www-data
 
-COPY --chown=www-data:www-data /php/www.conf ${PHP_CONF_DIR}/
+# Copy existing application directory permissions
+COPY --chown=www-data:www-data . /var/www/html
 
+# Change current user to www
+USER www-data
 
-# cookies 資料夾
-RUN cd ${ENV_CONFIG_DIR}\
-    && mkdir cookies \
-    && chown www-data:www-data cookies
-
-
-# 直接把 image內的路徑copy到自己容器中
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
-
-RUN export ENV_CONFIG_DIR=/var/www/html
-
-
-
-# 成功帶入 參數 php.ini
-# 明天繼續 安裝 composer
+# Expose port 9000 and start php-fpm server
+EXPOSE 9000
+CMD ["php-fpm"]
