@@ -1,82 +1,64 @@
-version: "3"
+version: '3'
 services:
-    nginx:
-        build:
-            context: .
-            dockerfile: nginx/Dockerfile
-        container_name: jobar_nginx
-        image: jobar_nginx:1.0
-        restart: always
-        ports: 
-            - "80:80"
-            - "443:443"
-        working_dir: /var/www/html
-        volumes_from:
-          - php
 
-        networks:
-            - internal
-
-        environment:
-            TZ: Asia/Taipei
-        
-        volumes:
-            - ./nginx/conf.d:/etc/nginx/conf.d/
-            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-
-        depends_on:
-            - db
-
-    php:
+    #Laravel App
+    app:
         build:
             context: .
             dockerfile: php/Dockerfile
-        image: jobar_php:1.0
-        container_name: jobar_php
-        restart: always
+        image: hakase-labs/laravel
+        container_name: app
+        restart: unless-stopped
+        tty: true
         environment:
-            XDEBUG_MODE: develop,debug #develop
-            XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003
-            ENV_CONFIG_DIR: /var/www/html
-            TZ: Asia/Taipei
-
-        volumes: # 這裡的映射會把本機端的資料映射到容器之中, 覆蓋容器內的資料, 因此只需將在本機上編輯查看的資料帶出來僅可
-            - ./data/:/var/www/html/
-
-        depends_on:
-            - db
-            
-        links:
-            - db
-        networks:
-            - internal
-            - default
-
-    db:
-        build:
-            context: .
-            dockerfile: mysql/Dockerfile
-        image: jobar_mysql:1.0
-        container_name: jobar_mysql
-
-        ports: 
-            - "3306:3306"
-        command:
-            --explicit_defaults_for_timestamp=true
-
-        environment:
-            MYSQL_DATABASE: jobar
-            MYSQL_USER: jobar
-            MYSQL_PASSWORD: jobar123
-            MYSQL_ROOT_PASSWORD: jobar123 
-            TZ : Asia/Taipei
+            SERVICE_NAME: app
+            SERVICE_TAGS: dev
+        working_dir: /var/www/html
         volumes:
-            - ./mysql/mysql_data:/var/lib/mysql
-
+            - ./jobar:/var/www/html
         networks:
-            - default
-        restart: always
+            - mynet
 
+    #Nginx Service
+    nginx:
+        image: nginx:alpine
+        container_name: nginx
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./jobar:/var/www/html
+            - ./nginx/conf.d/:/etc/nginx/conf.d/
+            - ./nginx/ssl/:/etc/nginx/ssl/
+        networks:
+            - mynet
+
+    #MySQL Service
+    db:
+        image: mysql:5.7
+        container_name: db
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: laraveldb
+            MYSQL_USER: laravel
+            MYSQL_PASSWORD: laravelpassworddb
+            MYSQL_ROOT_PASSWORD: rootpasswordmysql
+        volumes:
+            - mysqldata:/var/lib/mysql/
+        networks:
+            - mynet
+
+#Docker Networks
 networks:
-    internal:
+    mynet:
         driver: bridge
+
+#Volumes
+volumes:
+    mysqldata:
+        driver: local
