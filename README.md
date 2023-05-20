@@ -44,3 +44,9 @@ php artisan key:generate
 php artisan migrate:install
 php artisan migrate
 ```
+
+### 初始化資料庫資料
+
+```
+php artisan db:seed
+```
