@@ -37,3 +37,10 @@ composer install
 ```
 php artisan key:generate
 ```
+
+### 初始化資料庫
+
+```
+php artisan migrate:install
+php artisan migrate
+```
