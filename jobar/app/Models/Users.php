@@ -53,4 +53,8 @@ final class Users extends Model
      */
     public $timestamps = true;
     
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
 }
