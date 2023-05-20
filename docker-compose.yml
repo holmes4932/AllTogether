@@ -16,6 +16,7 @@ services:
         working_dir: /var/www/html
         volumes:
             - ./jobar:/var/www/html
+            - ./php/env/.env:/var/www/html/.env
         networks:
             - mynet
 
@@ -30,6 +31,7 @@ services:
             - "443:443"
         volumes:
             - ./jobar:/var/www/html
+            - ./php/env/.env:/var/www/html/.env
             - ./nginx/conf.d/:/etc/nginx/conf.d/
             - ./nginx/ssl/:/etc/nginx/ssl/
         networks:

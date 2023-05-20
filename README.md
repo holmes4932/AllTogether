@@ -6,6 +6,12 @@
 git clone https://github.com/holmes4932/AllTogether.git 
 ```
 
+### 複製 env
+
+```
+cp php/env/local.env php/env/.env  
+```
+
 ### 啟動 docker
 
 ```
@@ -17,8 +23,6 @@ docker-compose up -d
 ```
 docker exec -it app sh
 ```
-
-### 複製 env**
 
 
 ### 下載 php library
