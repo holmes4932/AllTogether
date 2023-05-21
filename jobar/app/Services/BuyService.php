@@ -6,7 +6,7 @@ use App\Repositories\UsersRepo;
 use App\Repositories\GroupsRepo;
 use App\Repositories\UserHasGroupRepo;
 
-class MqttService 
+class BuyService 
 {
 	/**
      * @var UsersRepo
