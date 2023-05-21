@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Services\BuyService;
 
 
 /**
- * Class BuyController
+ * Class HomeController
  *
  * @package App\Http\Controllers
  */
@@ -66,7 +67,7 @@ class HomeController extends Controller {
 
     }
 
-    public function editGroup(Request $request, $groupId) {
+    public function editGroup(Request $request, $groupId = 0) {
 
         $user = Auth::user();
 
@@ -75,19 +76,49 @@ class HomeController extends Controller {
                 // update current data
                 $group = $this->buyService->getGroupInfo($user->id, $groupId);
                 $group['submit'] = 'update';
-
+                $group['form'] = '/group/updateOrCreate/'.$group['id'];
                 return view('home.editGroup', compact('group'));
             }
             else {
                 // create new data
                 $group['submit'] = 'create';
-
+                $group['form'] = '/group/updateOrCreate/';
+                return view('home.editGroup', compact('group'));
             }
-            
         }
         else {
             return view('home.index');
         }
+    }
 
+    public function updateOrCreateGroup(Request $request, $groupId = 0) {
+
+        DB::beginTransaction();
+        try {
+            $user = Auth::user();
+            $data = $request->all();
+
+            if ($user) {
+                $this->buyService->updateOrCreateGroup($user->id, $groupId, $data);
+
+                $info = [
+                    'redirectUrl' => '/group/own',
+                    'message' => 'successful',
+                ];
+                DB::commit();
+                return view('layouts.info-master', compact('info'));
+            }
+            else {
+                DB::commit();
+                return view('home.index');
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            $info = [
+                'redirectUrl' => '/group/own',
+                'message' => $e->getMessage(),
+            ];
+            return view('layouts.info-master', compact('info'));
+		}
     }
 }

@@ -6,11 +6,10 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.87.0">
-    <title>Jobar Signin</title>
+    <title>JoBAR info</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{!! url('assets/bootstrap/css/bootstrap.min.css') !!}" rel="stylesheet">
-    <link href="{!! url('assets/css/signin.css') !!}" rel="stylesheet">
     
     <style>
       .bd-placeholder-img {
@@ -27,19 +26,22 @@
         }
       }
     </style>
-
     
     <!-- Custom styles for this template -->
     <link href="signin.css" rel="stylesheet">
 </head>
 <body class="text-center">
     
-    <main class="form-signin">
-
-        @yield('content')
-        
+    <main class="container">
+        <div class="bg-light p-5 rounded">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ $info['message'] }}</h3>
+                </div>
+                <a href="{{ $info['redirectUrl'] }}" class="btn btn-secondary btn-sm btn-icon icon-left">返回列表</a>
+            </div>
+        </div>
     </main>
     
-
 </body>
 </html>

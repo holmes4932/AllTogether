@@ -19,6 +19,7 @@
                             <th data-name="deadline">截止時間</th>
                             <th data-name="created_at">建立日期</th>
                             <th data-name="updated_at">更新日期</th>
+                            <th data-name="option">選項</th>
                         </tr>
                     </thead>
                     @foreach ($groups as $group)
@@ -33,6 +34,9 @@
                             <td>{{ $group['deadline'] }}</td>
                             <td>{{ $group['created_at'] }}</td>
                             <td>{{ $group['updated_at'] }}</td>
+                            <td>
+                                <a href="{{ '/group/quit/'.$group['id'] }}" class="btn btn-secondary btn-sm btn-icon icon-left">退出</a>
+                            </td>
                         </tr>
                     </tbody>
                     @endforeach

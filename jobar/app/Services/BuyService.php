@@ -111,6 +111,15 @@ class BuyService
 		return $group;
 	}
 
+    public function updateOrCreateGroup ($userId, $groupId, $data) {
+
+        $data['owner_user_id'] = $userId;
+
+        $this->groupsRepo->updateOrCreate($data);
+
+		return;
+	}
+
 }
 
 ?>
