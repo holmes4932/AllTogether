@@ -5,9 +5,10 @@ namespace App\Models;
 // use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Illuminate\Notifications\Notifiable;
 // use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;   
 use Illuminate\Database\Eloquent\Model;
 
-final class Users extends Model
+final class Users extends Authenticatable
 {
     //use HasApiTokens, HasFactory, Notifiable;
 
@@ -56,5 +57,10 @@ final class Users extends Model
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
+    }
+
+    public function setPasswordConfirmationAttribute($value)
+    {
+        $this->attributes['password_confirmation'] = bcrypt($value);
     }
 }
