@@ -146,6 +146,10 @@ class GroupsRepo
             $groups->whereIn('id', $ids);
         }
 
+        if (isset($where['ids <>'])) {
+            $groups->whereNotIn('id', $where['ids <>']);
+        }
+
         if (isset($where['with'])) {
             $groups->with($where['with']);
         }
@@ -156,6 +160,10 @@ class GroupsRepo
 
         if (isset($where['owner_user_id'])) {
             $groups->where('owner_user_id', $where['owner_user_id']);
+        }
+
+        if (isset($where['owner_user_id <>'])) {
+            $groups->where('owner_user_id', '!=', $where['owner_user_id <>']);
         }
 
         if (isset($where['max_people'])) {

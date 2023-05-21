@@ -37,4 +37,32 @@ class HomeController extends Controller {
         }
 
     }
+
+    public function ownGroup(Request $request) {
+
+        $user = Auth::user();
+
+        if ($user) {
+            $groups = $this->buyService->getOwnerGroups($user->id);
+            return view('home.ownGroup', compact('groups'));
+        }
+        else {
+            return view('home.index');
+        }
+
+    }
+
+    public function searchGroup(Request $request) {
+
+        $user = Auth::user();
+
+        if ($user) {
+            $groups = $this->buyService->getSearchGroups($user->id);
+            return view('home.searchGroup', compact('groups'));
+        }
+        else {
+            return view('home.index');
+        }
+
+    }
 }

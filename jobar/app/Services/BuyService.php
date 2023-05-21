@@ -52,6 +52,41 @@ class BuyService
 		return $groups;
 	}
 
+	public function getOwnerGroups($userId){
+
+		$groups = $this->groupsRepo->getByWhere([
+            'with' => ['ownerUsers'],
+            'owner_user_id' => $userId,
+        ]);
+
+		$groups->transform(function ($value){
+			$value['owner_user_name'] = $value->ownerUsers['name'];
+			return $value;
+		});
+
+		return $groups;
+	}
+
+	public function getSearchGroups($userId){
+
+		$userHasGroups = $this->userHasGroupRepo->getByWhere([
+            'user_id' => $userId,
+        ])->pluck('group_id');
+		
+		$groups = $this->groupsRepo->getByWhere([
+            'with' => ['ownerUsers'],
+            'owner_user_id <>' => $userId,
+			'ids <>' => $userHasGroups
+        ]);
+
+		$groups->transform(function ($value){
+			$value['owner_user_name'] = $value->ownerUsers['name'];
+			return $value;
+		});
+
+		return $groups;
+	}
+
 }
 
 ?>

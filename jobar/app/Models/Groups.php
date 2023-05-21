@@ -52,5 +52,10 @@ final class Groups extends Model
      * @var bool
      */
     public $timestamps = true;
+
+    public function ownerUsers()
+    {
+        return $this->hasOne('App\Models\Users', 'id', 'owner_user_id');
+    }
     
 }
