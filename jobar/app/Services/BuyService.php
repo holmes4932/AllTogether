@@ -39,15 +39,19 @@ class BuyService
     public function getGroups($userId){
 
 		$groups = $this->userHasGroupRepo->getByWhere([
-            'with' => 'groups',
+            'with' => ['groups'],
             'user_id' => $userId,
         ]);
+
+		$groups->transform(function ($value){
+			$ownerUser = $this->usersRepo->get($value->groups['owner_user_id']);
+			$value->groups['owner_user_name'] = $ownerUser['name'];
+			return $value->groups;
+		});
 
 		return $groups;
 	}
 
 }
-
-
 
 ?>

@@ -118,9 +118,9 @@ class UsersRepo
      * @param  $id
      * @return mixed
      */
-    public function get($token)
+    public function get($id)
     {
-        return Users::find($token);
+        return Users::find($id);
     }
 
     /**

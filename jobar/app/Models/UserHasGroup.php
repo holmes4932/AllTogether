@@ -53,12 +53,12 @@ final class UserHasGroup extends Model
      */
     public $timestamps = true;
 
-    public function Users()
+    public function users()
     {
         return $this->hasOne('App\Models\Users', 'id', 'user_id');
     }
 
-    public function Groups()
+    public function groups()
     {
         return $this->hasOne('App\Models\Groups', 'id', 'group_id');
     }
