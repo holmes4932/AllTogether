@@ -34,7 +34,7 @@
                             <td>{{ $group['created_at'] }}</td>
                             <td>{{ $group['updated_at'] }}</td>
                             <td>
-
+                                <a href="{{ '/group/join/'.$group['id'] }}" class="btn btn-secondary btn-sm btn-icon icon-left">加入</a>
                             </td>
                         </tr>
                     </tbody>
