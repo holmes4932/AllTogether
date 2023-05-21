@@ -65,4 +65,29 @@ class HomeController extends Controller {
         }
 
     }
+
+    public function editGroup(Request $request, $groupId) {
+
+        $user = Auth::user();
+
+        if ($user) {
+            if ($groupId) {
+                // update current data
+                $group = $this->buyService->getGroupInfo($user->id, $groupId);
+                $group['submit'] = 'update';
+
+                return view('home.editGroup', compact('group'));
+            }
+            else {
+                // create new data
+                $group['submit'] = 'create';
+
+            }
+            
+        }
+        else {
+            return view('home.index');
+        }
+
+    }
 }

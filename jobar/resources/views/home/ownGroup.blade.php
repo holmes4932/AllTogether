@@ -16,9 +16,10 @@
                             <th data-name="max_people">最大容量</th>
                             <th data-name="min_people">最小容量</th>
                             <th data-name="current_people">現在容量</th>
+                            <th data-name="deadline">截止時間</th>
                             <th data-name="created_at">建立日期</th>
                             <th data-name="updated_at">更新日期</th>
-                            <th data-name="updated_at">選項</th>
+                            <th data-name="option">選項</th>
                         </tr>
                     </thead>
                     @foreach ($groups as $group)
@@ -29,10 +30,12 @@
                             <td>{{ $group['max_people'] }}</td>
                             <td>{{ $group['min_people'] }}</td>
                             <td>{{ $group['current_people'] }}</td>
+                            <td>{{ $group['deadline'] }}</td>
                             <td>{{ $group['created_at'] }}</td>
                             <td>{{ $group['updated_at'] }}</td>
                             <td>
-
+                                <a href="{{ '/group/edit/'.$group['id'] }}" class="btn btn-secondary btn-sm btn-icon icon-left">編輯</a>
+                                <a href="{{ '/group/delete/'.$group['id'] }}" class="btn btn-secondary btn-sm btn-icon icon-left">解散</a>
                             </td>
                         </tr>
                     </tbody>

@@ -87,6 +87,20 @@ class BuyService
 		return $groups;
 	}
 
+	public function getGroupInfo ($userId, $groupId) {
+
+		$group = $this->groupsRepo->getByWhere([
+			'with' => ['ownerUsers']], 
+			[$groupId]
+		)->first();
+
+		if ($group['owner_user_id'] != $userId) return NULL;
+
+		$group['owner_user_name'] = $group->ownerUsers['name'];
+
+		return $group;
+	}
+
 }
 
 ?>

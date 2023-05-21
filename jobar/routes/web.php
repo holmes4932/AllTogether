@@ -24,6 +24,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'HomeController@index')->name('home.index');
 Route::get('/group/own', 'HomeController@ownGroup')->name('home.ownGroup');
 Route::get('/group/search', 'HomeController@searchGroup')->name('home.searchGroup');
+Route::get('/group/edit/{groupId}', 'HomeController@editGroup')->name('home.editGroup');
+Route::get('/group/updateOrCreate/{groupId}', 'HomeController@updateOrCreateGroup')->name('home.updateOrCreateGroup');
+
 
 Route::group(['middleware' => ['guest']], function() {
     /**

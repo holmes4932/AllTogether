@@ -16,6 +16,7 @@
                             <th data-name="max_people">最大容量</th>
                             <th data-name="min_people">最小容量</th>
                             <th data-name="current_people">現在容量</th>
+                            <th data-name="deadline">截止時間</th>
                             <th data-name="created_at">建立日期</th>
                             <th data-name="updated_at">更新日期</th>
                             <th data-name="updated_at">選項</th>
@@ -29,6 +30,7 @@
                             <td>{{ $group['max_people'] }}</td>
                             <td>{{ $group['min_people'] }}</td>
                             <td>{{ $group['current_people'] }}</td>
+                            <td>{{ $group['deadline'] }}</td>
                             <td>{{ $group['created_at'] }}</td>
                             <td>{{ $group['updated_at'] }}</td>
                             <td>
