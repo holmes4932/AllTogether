@@ -80,7 +80,7 @@ class UserHasGroupRepo
             [
                 'id' => $data['id'],
             ],
-            $data,
+            $data
         );
     }
 

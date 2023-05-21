@@ -80,7 +80,7 @@ class GroupsRepo
             [
                 'id' => $data['id'],
             ],
-            $data,
+            $data
         );
     }
 

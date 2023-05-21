@@ -78,9 +78,9 @@ class UsersRepo
     {
         return Users::updateOrCreate(
             [
-                'access_token' => $data['access_token'],
+                'id' => $data['id'],
             ],
-            $data,
+            $data
         );
     }
 
