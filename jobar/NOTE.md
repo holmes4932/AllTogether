@@ -27,7 +27,7 @@ $data = 1;
 ```
 ## Laravel 架構
 
-![](https://hackmd.io/_uploads/By8AHkdBh.png)
+![image](https://github.com/holmes4932/AllTogether/assets/52311940/af1bc70a-dd1d-430d-9062-5af442a9cffa)
 
 #### Controller
 Request 入口
