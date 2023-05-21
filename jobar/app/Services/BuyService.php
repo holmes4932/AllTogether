@@ -45,8 +45,18 @@ class BuyService
 
 		$groups->transform(function ($value){
 			$ownerUser = $this->usersRepo->get($value->groups['owner_user_id']);
-			$value->groups['owner_user_name'] = $ownerUser['name'];
-			return $value->groups;
+
+			return [
+                'name' => $value->groups['name'],
+                'owner_user_name' => $ownerUser['name'],
+                'max_people' => $value->groups['max_people'],
+                'min_people' => $value->groups['min_people'],
+                'current_people' => $value->groups['current_people'],
+                'deadline' => $value->groups['deadline'],
+                'deleted_at' => $value->groups['deleted_at'],
+                'created_at' => $value->groups['created_at'],
+                'updated_at' => $value->groups['updated_at'],
+            ];
 		});
 
 		return $groups;

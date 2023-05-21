@@ -13,11 +13,21 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         Users::updateOrCreate(
-            ['name' => 'admin'],
+            ['id' => 1],
             [
+                'id' => 1,
                 'name' => 'admin',
-                'email'    => 'holmes4932@gmail.com',
+                'email' => 'holmes4932@gmail.com',
                 'password' => 'admin123',
+            ]
+        );
+        Users::updateOrCreate(
+            ['id' => 2],
+            [
+                'id' => 2,
+                'name' => 'test',
+                'email' => 'test@gmail.com',
+                'password' => 'test1234',
             ]
         );
     }

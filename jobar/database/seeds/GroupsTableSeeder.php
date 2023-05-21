@@ -15,7 +15,7 @@ class GroupsTableSeeder extends Seeder
     {
         Groups::create([
             'name' => 'testing',
-            'owner_user_id' => 5,
+            'owner_user_id' => 1,
             'max_people' => 7,
             'min_people' => 6,
             'current_people' => 4,
