@@ -109,7 +109,43 @@ class HomeController extends Controller {
                 return view('layouts.info-master', compact('info'));
             }
             else {
-                DB::commit();
+                DB::rollback();
+                return view('home.index');
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            $info = [
+                'redirectUrl' => '/group/own',
+                'message' => $e->getMessage(),
+            ];
+            return view('layouts.info-master', compact('info'));
+		}
+    }
+
+    public function deleteGroup(Request $request, $groupId) {
+
+        DB::beginTransaction();
+        try {
+            $user = Auth::user();
+            if ($user) {
+                if ($this->buyService->deleteGroup($user->id, $groupId) == 0) {
+                    $info = [
+                        'redirectUrl' => '/group/own',
+                        'message' => 'successful',
+                    ];
+                    DB::commit();
+                    return view('layouts.info-master', compact('info'));
+                }
+                else {
+                    $info = [
+                        'redirectUrl' => '/group/own',
+                        'message' => 'error : not owner',
+                    ];
+                    DB::rollback();
+                    return view('layouts.info-master', compact('info'));
+                }
+            }
+            else {
                 return view('home.index');
             }
         } catch (\Exception $e) {

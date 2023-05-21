@@ -186,6 +186,10 @@ class GroupsRepo
             $groups->where('deleted_at', $where['deleted_at']);
         }
 
+        if (isset($where['deleted_at = null'])) {
+            $groups->whereNull('deleted_at');
+        }
+
         if (!isset($where['sort'])) {
             $where['sort'] = 'id';
         }

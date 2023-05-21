@@ -26,6 +26,7 @@ Route::get('/group/own', 'HomeController@ownGroup')->name('home.ownGroup');
 Route::get('/group/search', 'HomeController@searchGroup')->name('home.searchGroup');
 Route::get('/group/edit/{groupId?}', 'HomeController@editGroup')->name('home.editGroup');
 Route::post('/group/updateOrCreate/{groupId?}', 'HomeController@updateOrCreateGroup')->name('home.updateOrCreateGroup');
+Route::get('/group/delete/{groupId}', 'HomeController@deleteGroup')->name('home.deleteGroup');
 
 
 Route::group(['middleware' => ['guest']], function() {

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Carbon\Carbon;
 use App\Repositories\UsersRepo;
 use App\Repositories\GroupsRepo;
 use App\Repositories\UserHasGroupRepo;
@@ -47,6 +48,7 @@ class BuyService
 			$ownerUser = $this->usersRepo->get($value->groups['owner_user_id']);
 
 			return [
+                'id' => $value->groups['id'],
                 'name' => $value->groups['name'],
                 'owner_user_name' => $ownerUser['name'],
                 'max_people' => $value->groups['max_people'],
@@ -57,7 +59,9 @@ class BuyService
                 'created_at' => $value->groups['created_at'],
                 'updated_at' => $value->groups['updated_at'],
             ];
-		});
+		})->filter(function ($value, $key) {
+            return $value['deleted_at'] == null;
+        });
 
 		return $groups;
 	}
@@ -67,6 +71,7 @@ class BuyService
 		$groups = $this->groupsRepo->getByWhere([
             'with' => ['ownerUsers'],
             'owner_user_id' => $userId,
+            'deleted_at = null' => 1,
         ]);
 
 		$groups->transform(function ($value){
@@ -86,7 +91,8 @@ class BuyService
 		$groups = $this->groupsRepo->getByWhere([
             'with' => ['ownerUsers'],
             'owner_user_id <>' => $userId,
-			'ids <>' => $userHasGroups
+			'ids <>' => $userHasGroups,
+            'deleted_at = null' => 1,
         ]);
 
 		$groups->transform(function ($value){
@@ -118,6 +124,25 @@ class BuyService
         $this->groupsRepo->updateOrCreate($data);
 
 		return;
+	}
+
+    public function deleteGroup ($userId, $groupId) {
+
+        $group = $this->groupsRepo->get($groupId);
+
+        if ($group['owner_user_id'] ==  $userId) {
+            
+            $data = [
+                'id' => $groupId,
+                'deleted_at' => Carbon::now(),
+            ];
+
+            $this->groupsRepo->updateOrCreate($data);
+            return 0;
+        }
+        else {
+            return -1;
+        }
 	}
 
 }
