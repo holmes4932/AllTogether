@@ -145,6 +145,26 @@ class BuyService
         }
 	}
 
+    public function joinGroup($userId, $groupId, $data) {
+
+        $data['user_id'] = $userId;
+        $data['group_id'] = $groupId;
+
+        $this->userHasGroupRepo->updateOrCreate($data);
+
+        $group = $this->groupsRepo->get($groupId);
+        if ($group['current_people'] + $data['people'] > $group['max_people']) return -1;
+
+        $new_group = [
+            'id' => $groupId,
+            'current_people' => $group['current_people'] + $data['people'],
+        ];
+        $this->groupsRepo->updateOrCreate($new_group);
+
+        return 0;
+
+    }
+
 }
 
 ?>

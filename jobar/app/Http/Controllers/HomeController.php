@@ -157,4 +157,58 @@ class HomeController extends Controller {
             return view('layouts.info-master', compact('info'));
 		}
     }
+
+    public function addInfo(Request $request, $groupId) {
+        $user = Auth::user();
+
+        if ($user) {
+            $group = [
+                'user_id' => $user->id,
+                'form' => '/group/join/'.$groupId,
+            ];
+            return view('home.addInfo', compact('group'));
+        }
+        else {
+            return view('home.index');
+        }
+    }
+
+    public function joinGroup(Request $request, $groupId) {
+
+        DB::beginTransaction();
+        try {
+            $user = Auth::user();
+            $data = $request->all();
+
+            if ($user) {
+                if ($this->buyService->joinGroup($user->id, $groupId, $data) == 0){
+                    $info = [
+                        'redirectUrl' => '/group/search',
+                        'message' => 'successful',
+                    ];
+                    DB::commit();
+                    return view('layouts.info-master', compact('info'));
+                }
+                else {
+                    $info = [
+                        'redirectUrl' => '/group/search',
+                        'message' => 'error: people overflow',
+                    ];
+                    DB::rollback();
+                    return view('layouts.info-master', compact('info'));
+                }
+            }
+            else {
+                DB::rollback();
+                return view('home.index');
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            $info = [
+                'redirectUrl' => '/group/search',
+                'message' => $e->getMessage(),
+            ];
+            return view('layouts.info-master', compact('info'));
+		}
+    }
 }
