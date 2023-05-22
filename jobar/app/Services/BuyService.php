@@ -103,6 +103,18 @@ class BuyService
 		return $groups;
 	}
 
+    public function orderList ($userId, $groupId) {
+
+        $group = $this->groupsRepo->get($groupId);
+        if ($group['owner_user_id'] != $userId) return NULL;
+
+        $userHasGroups = $this->userHasGroupRepo->getByWhere([
+            'group_id' => $groupId,
+        ]);
+
+        return $userHasGroups;
+    }
+
 	public function getGroupInfo ($userId, $groupId) {
 
 		$group = $this->groupsRepo->getByWhere([

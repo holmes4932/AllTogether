@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'HomeController@index')->name('home.index');
 Route::get('/group/own', 'HomeController@ownGroup')->name('home.ownGroup');
 Route::get('/group/search', 'HomeController@searchGroup')->name('home.searchGroup');
-Route::post('/group/info/{groupId}', 'HomeController@groupInfo')->name('home.groupInfo');
+Route::get('/group/orderlist/{groupId}', 'HomeController@orderList')->name('home.orderList');
 
 Route::get('/group/edit/{groupId?}', 'HomeController@editGroup')->name('home.editGroup');
 Route::post('/group/updateOrCreate/{groupId?}', 'HomeController@updateOrCreateGroup')->name('home.updateOrCreateGroup');

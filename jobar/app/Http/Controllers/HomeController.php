@@ -67,6 +67,23 @@ class HomeController extends Controller {
 
     }
 
+    public function orderList (Request $request, $groupId) {
+        $user = Auth::user();
+        if ($user) {
+            $groupHasUser = $this->buyService->orderList($user->id, $groupId);
+            if ($groupHasUser) {
+                return view('home.orderList', compact('groupHasUser'));
+            }
+            else {
+                return view('home.index');
+            }
+        }
+        else {
+            return view('home.index');
+        }
+    }
+
+
     public function editGroup(Request $request, $groupId = 0) {
 
         $user = Auth::user();
