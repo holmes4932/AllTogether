@@ -17,7 +17,7 @@ class UsersTableSeeder extends Seeder
             [
                 'id' => 1,
                 'name' => 'admin',
-                'email' => 'holmes4932@gmail.com',
+                'email' => 'admin@gmail.com',
                 'password' => 'admin123',
             ]
         );
@@ -25,9 +25,9 @@ class UsersTableSeeder extends Seeder
             ['id' => 2],
             [
                 'id' => 2,
-                'name' => 'test',
-                'email' => 'test@gmail.com',
-                'password' => 'test1234',
+                'name' => 'kaguya',
+                'email' => 'kaguya@gmail.com',
+                'password' => 'kaguya12',
             ]
         );
     }

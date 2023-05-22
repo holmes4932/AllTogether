@@ -12,25 +12,25 @@ class UserHasGroupTableSeeder extends Seeder
      */
     public function run()
     {
-        UserHasGroup::updateOrCreate(
-            [
-                'user_id' => 1,
-                'group_id' => 1,
-            ],
-            [
-                'user_id' => 1,
-                'group_id' => 1,
-            ]
-        );
-        UserHasGroup::updateOrCreate(
-            [
-                'user_id' => 1,
-                'group_id' => 2,
-            ],
-            [
-                'user_id' => 1,
-                'group_id' => 2,
-            ]
-        );
+        // UserHasGroup::updateOrCreate(
+        //     [
+        //         'user_id' => 1,
+        //         'group_id' => 1,
+        //     ],
+        //     [
+        //         'user_id' => 1,
+        //         'group_id' => 1,
+        //     ]
+        // );
+        // UserHasGroup::updateOrCreate(
+        //     [
+        //         'user_id' => 1,
+        //         'group_id' => 2,
+        //     ],
+        //     [
+        //         'user_id' => 1,
+        //         'group_id' => 2,
+        //     ]
+        // );
     }
 }
