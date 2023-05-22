@@ -37,3 +37,24 @@ composer install
 ```
 php artisan key:generate
 ```
+
+### 初始化資料庫
+
+```
+php artisan migrate:install
+php artisan migrate
+```
+
+### 初始化資料庫資料 (optional)
+
+```
+php artisan db:seed
+```
+如果在這個階段遇到 
+```
+Target class [xxxSeeder] does not exist.
+```
+的問題，要更新 composer
+```
+composer update
+```

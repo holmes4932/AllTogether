@@ -18,7 +18,7 @@ services:
             - ./jobar:/var/www/html
             - ./php/env/.env:/var/www/html/.env
         networks:
-            - mynet
+            - jobar_net
 
     #Nginx Service
     nginx:
@@ -35,29 +35,37 @@ services:
             - ./nginx/conf.d/:/etc/nginx/conf.d/
             - ./nginx/ssl/:/etc/nginx/ssl/
         networks:
-            - mynet
+            - jobar_net
 
     #MySQL Service
     db:
-        image: mysql:5.7
-        container_name: db
-        restart: unless-stopped
-        tty: true
-        ports:
+        build:
+            context: .
+            dockerfile: mysql/Dockerfile
+        image: jobar_mysql:1.0
+        container_name: jobar_mysql
+
+        ports: 
             - "3306:3306"
+        command:
+            --explicit_defaults_for_timestamp=true
+
         environment:
-            MYSQL_DATABASE: laraveldb
-            MYSQL_USER: laravel
-            MYSQL_PASSWORD: laravelpassworddb
-            MYSQL_ROOT_PASSWORD: rootpasswordmysql
+            MYSQL_DATABASE: jobar
+            MYSQL_USER: jobar
+            MYSQL_PASSWORD: jobar123
+            MYSQL_ROOT_PASSWORD: jobar123 
+            TZ : Asia/Taipei
         volumes:
-            - mysqldata:/var/lib/mysql/
+            - ./mysql/mysql_data:/var/lib/mysql
+
         networks:
-            - mynet
+            - jobar_net
+        restart: always
 
 #Docker Networks
 networks:
-    mynet:
+    jobar_net:
         driver: bridge
 
 #Volumes
