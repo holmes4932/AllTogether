@@ -211,4 +211,34 @@ class HomeController extends Controller {
             return view('layouts.info-master', compact('info'));
 		}
     }
+
+    public function quitGroup(Request $request, $groupId) {
+
+        DB::beginTransaction();
+        try {
+            $user = Auth::user();
+            if ($user) {
+
+                $this->buyService->quitGroup($user->id, $groupId);
+
+                $info = [
+                    'redirectUrl' => '/',
+                    'message' => 'successful',
+                ];
+                DB::commit();
+                return view('layouts.info-master', compact('info'));
+            }
+            else {
+                DB::rollback();
+                return view('home.index');
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            $info = [
+                'redirectUrl' => '/',
+                'message' => $e->getMessage(),
+            ];
+            return view('layouts.info-master', compact('info'));
+		}
+    }
 }

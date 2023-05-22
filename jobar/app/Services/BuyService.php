@@ -165,6 +165,25 @@ class BuyService
 
     }
 
+
+    public function quitGroup ($userId, $groupId) {
+
+        $group = $this->groupsRepo->get($groupId);
+        $userHasGroup = $this->userHasGroupRepo->getByWhere([
+            'user_id' => $userId,
+            'groupId' => $groupId,
+        ])->first();
+
+        $groupData = [
+            'id' => $groupId,
+            'current_people' => $group['current_people'] - $userHasGroup['people'],
+        ];
+        $this->groupsRepo->updateOrCreate($groupData);
+
+        $this->userHasGroupRepo->delete($userHasGroup['id']);
+            
+	}
+
 }
 
 ?>

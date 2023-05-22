@@ -34,6 +34,7 @@
                             <td>{{ $group['created_at'] }}</td>
                             <td>{{ $group['updated_at'] }}</td>
                             <td>
+                                <a href="{{ '/group/info/'.$group['id'] }}" class="btn btn-secondary btn-sm btn-icon icon-left">資訊</a>
                                 <a href="{{ '/group/edit/'.$group['id'] }}" class="btn btn-secondary btn-sm btn-icon icon-left">編輯</a>
                                 <a href="{{ '/group/delete/'.$group['id'] }}" class="btn btn-secondary btn-sm btn-icon icon-left">解散</a>
                             </td>
