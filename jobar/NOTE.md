@@ -1,5 +1,10 @@
 # Laravel 入門
+## 版本
+> laravel 7.0
+> php 7.2
 
+官網
+> https://laravel.com/docs/7.x
 ## 先備知識
 
 #### MVC 架構
@@ -89,3 +94,7 @@ laravel 的 library
 ```
 vendor/
 ```
+## 參考資料
+
+#### laravel 實作登入功能 (laravel 8)
+https://codeanddeploy.com/blog/laravel/laravel-8-authentication-login-and-registration-with-username-or-email
