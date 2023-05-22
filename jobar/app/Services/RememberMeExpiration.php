@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Login;
+namespace App\Services;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
