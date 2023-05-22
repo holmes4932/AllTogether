@@ -40,7 +40,7 @@ services:
     #MySQL Service
     db:
         build:
-            context: .
+            context: ./
             dockerfile: mysql/Dockerfile
         image: jobar_mysql:1.0
         container_name: jobar_mysql
